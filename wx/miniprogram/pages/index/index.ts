@@ -1,7 +1,9 @@
 // index.ts
 // 获取应用实例
 
-interface Marker {
+import {IAppOption} from "../../appoption";
+
+/*interface Marker {
     iconPath: string
     id: number
     latitude: number
@@ -10,7 +12,7 @@ interface Marker {
     height: number
 }
 
-const defaultAvatar = '../../resources/car.png'
+const defaultAvatar = '../../resources/car.png'*/
 const initialLat = 29.761267625855936
 const initialLng = 121.87264654736123
 
@@ -132,6 +134,12 @@ Page({
                 })
             },
             fail : console.error,
+        })
+    },
+
+    onMyTripsTap(){
+        wx.navigateTo({
+            url: '/pages/mytrips/mytrips',
         })
     }
 
