@@ -5,6 +5,8 @@ import { rental } from "../../service/proto_gen/rental/rental_pb"
 import { TripService } from "../../service/trip"
 import { routing } from "../../utils/routing"*/
 
+import {IAppOption} from "../../appoption";
+
 const shareLocationKey = "share_location"
 
 Page({
@@ -25,14 +27,14 @@ Page({
     },
 
     getUserProfile(){
-        wx.getUserProfile({
+      /*  wx.getUserProfile({
             desc:'用户获取用户头像',
             success:(res) => {
                 this.setData({
                     avatarURL:res.userInfo.avatarUrl
                 })
             }
-        })
+        })*/
     },
 
     onShareLocation(e: any) {
@@ -40,6 +42,38 @@ Page({
         wx.setStorageSync(shareLocationKey, this.data.shareLocation)
     },
 
+    onUnlockTap(){
+        wx.getLocation({
+            type: 'gcj02',
+            success: loc => {
+                console.log('starting a trip', {
+                    location: {
+                        latitude: loc.latitude,
+                        longitude: loc.longitude,
+                    },
+                    avatarURL: this.data.shareLocation? this.data.avatarURL: ''
+                })
+            }
+        })
+        wx.showLoading({
+            title: '开锁中',
+            mask: true,
+        })
+        setTimeout(() => {
+            wx.redirectTo({
+                url: '/pages/driving/driving',
+                complete: () => {
+                    wx.hideLoading()
+                }
+            })
+        }, 2000)
+    },
+    fail: () => {
+        wx.showToast({
+            icon: 'none',
+            title: '请前往设置授权信息'
+        })
+    },
     /*onUnlockTap() {
         wx.getLocation({
             type: 'gcj02',

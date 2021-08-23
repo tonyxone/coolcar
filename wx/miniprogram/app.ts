@@ -1,7 +1,19 @@
 // app.ts
+import {IAppOption} from "./appoption";
+
 App<IAppOption>({
   globalData: {},
-  onLaunch() {
+  async onLaunch() {
+    wx.request({
+      url: 'http://localhost:8088/trip/trip123',
+      method: 'GET',
+      success: res => {
+        const getTripResp = res.data
+        console.log(getTripResp)
+      },
+      fail: console.error
+    })
+
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
